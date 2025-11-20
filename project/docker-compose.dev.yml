@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  # MongoDB Database (Development)
+  mongodb:
+    image: mongo:6.0
+    container_name: swati-jewellers-mongodb-dev
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+      MONGO_INITDB_DATABASE: swati_jewellers_dev
+    volumes:
+      - mongodb_dev_data:/data/db
+    networks:
+      - app-network-dev
+
+  # Flask Backend (Development with hot reload)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    container_name: swati-jewellers-backend-dev
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      FLASK_ENV: development
+      FLASK_DEBUG: 1
+      MONGODB_URI: mongodb://admin:admin123@mongodb:27017/swati_jewellers_dev?authSource=admin
+      JWT_SECRET_KEY: dev-secret-key-not-for-production
+      CORS_ORIGINS: http://localhost:5173,http://localhost:3000
+    volumes:
+      - ./backend:/app
+      - /app/__pycache__
+    depends_on:
+      - mongodb
+    networks:
+      - app-network-dev
+    command: python run.py
+
+volumes:
+  mongodb_dev_data:
+    driver: local
+
+networks:
+  app-network-dev:
+    driver: bridge
