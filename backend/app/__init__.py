@@ -1,5 +1,5 @@
 """Flask application factory."""
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from mongoengine import connect
@@ -44,8 +44,6 @@ def create_app(config_name='development'):
     })
     
     jwt = JWTManager(app)
-    
-    
     
     # Configure JWT error callbacks for consistent error format
     @jwt.expired_token_loader
@@ -157,6 +155,14 @@ def create_app(config_name='development'):
     # Register error handlers
     register_error_handlers(app)
     
+    def add_security_headers(response):
+        """Add security headers to response."""
+        response.headers['X-Content-Type-Options'] = 'nosniff'
+        response.headers['X-Frame-Options'] = 'DENY'
+        response.headers['X-XSS-Protection'] = '1; mode=block'
+        response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+        return response
+    
     @app.after_request
     def apply_security_headers(response):
         """Apply security headers to all responses."""
@@ -167,7 +173,7 @@ def create_app(config_name='development'):
     def enforce_https():
         """Redirect HTTP to HTTPS in production."""
         import os
-        from flask import request, redirect
+        from flask import redirect
         
         env = os.environ.get('FLASK_ENV', 'production')
         
@@ -179,11 +185,7 @@ def create_app(config_name='development'):
                 url = request.url.replace('http://', 'https://', 1)
                 return redirect(url, code=301)
     
-    
-    
     # Serve uploaded images
-    from flask import send_from_directory
-    
     @app.route('/uploads/products/<filename>')
     def serve_product_image(filename):
         """Serve uploaded product images."""
@@ -260,6 +262,24 @@ def create_app(config_name='development'):
         status_code = 200 if health_status['status'] == 'healthy' else 503
         
         return jsonify(health_status), status_code
+    
+    # Root endpoint
+    @app.route('/')
+    def root():
+        """Root endpoint with API information."""
+        return jsonify({
+            'message': 'Swati Jewelers E-commerce Platform API',
+            'version': '1.0.0',
+            'status': 'running',
+            'endpoints': {
+                'health': '/api/health',
+                'products': '/api/products',
+                'customers': '/api/customers',
+                'sales': '/api/sales',
+                'auth': '/api/auth',
+                'documentation': 'https://github.com/shivamjha2002/swaggold-ecommerce-platform'
+            }
+        })
     
     return app
 
