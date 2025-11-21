@@ -19,7 +19,7 @@ numpy==1.24.3
 scikit-learn==1.3.2
 joblib==1.3.2
 
-# Payment Gateway - Updated to compatible version
+# Payment Gateway
 razorpay==2.0.0
 
 # Environment & Configuration
@@ -28,7 +28,7 @@ python-decouple==3.8
 
 # Authentication & Security
 PyJWT==2.8.0
-cryptography==41.0.8
+cryptography==42.0.5
 
 # Google AI Integration
 google-generativeai==0.3.2
