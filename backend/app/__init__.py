@@ -115,23 +115,32 @@ def create_app(config_name='development'):
             }
         }), 401
     
-    # Connect to MongoDB with connection pooling and error handling
+    # Connect to MongoDB Atlas with connection pooling and error handling
     try:
         connect(
             host=app.config['MONGODB_URI'],
             alias='default',
             maxPoolSize=50,
             minPoolSize=10,
-            serverSelectionTimeoutMS=5000,
-            connectTimeoutMS=10000,
-            socketTimeoutMS=10000
+            serverSelectionTimeoutMS=10000,  # Increased timeout for Atlas
+            connectTimeoutMS=15000,
+            socketTimeoutMS=15000,
+            retryWrites=True,
+            w='majority'
         )
-        app.logger.info('Successfully connected to MongoDB')
+        app.logger.info('✅ Successfully connected to MongoDB Atlas!')
+        
+        # Test the connection
+        from mongoengine import connection
+        db = connection.get_db()
+        db.command('ping')
+        app.logger.info('✅ MongoDB Atlas connection test passed!')
+        
     except ConnectionFailure as e:
-        app.logger.error(f'Failed to connect to MongoDB: {str(e)}')
+        app.logger.error(f'❌ Failed to connect to MongoDB Atlas: {str(e)}')
         raise
     except Exception as e:
-        app.logger.error(f'Unexpected error connecting to MongoDB: {str(e)}')
+        app.logger.error(f'❌ Unexpected error connecting to MongoDB Atlas: {str(e)}')
         raise
     
     # Register blueprints
@@ -226,14 +235,14 @@ def create_app(config_name='development'):
             db.command('ping')
             health_status['checks']['database'] = {
                 'status': 'healthy',
-                'message': 'Database connection successful'
+                'message': 'MongoDB Atlas connection successful'
             }
         except Exception as e:
             app.logger.error(f'Database health check failed: {str(e)}')
             health_status['status'] = 'degraded'
             health_status['checks']['database'] = {
                 'status': 'unhealthy',
-                'message': f'Database connection failed: {str(e)}'
+                'message': f'MongoDB Atlas connection failed: {str(e)}'
             }
         
         # Check ML models availability
@@ -409,13 +418,13 @@ def register_error_handlers(app):
     @app.errorhandler(ConnectionFailure)
     def handle_connection_failure(error):
         """Handle MongoDB connection failures."""
-        app.logger.error(f'Database connection failure: {str(error)}')
+        app.logger.error(f'❌ MongoDB Atlas connection failure: {str(error)}')
         response = {
             'success': False,
             'error': {
                 'code': 503,
-                'message': 'Database service unavailable',
-                'details': 'Unable to connect to database'
+                'message': 'MongoDB Atlas service unavailable',
+                'details': 'Unable to connect to MongoDB Atlas. Please check your connection and credentials.'
             }
         }
         return jsonify(response), 503

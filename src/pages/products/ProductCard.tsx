@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Heart, ShoppingCart, Gem } from 'lucide-react';
+import { Heart, ShoppingCart, Gem, Camera } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { Product } from '../../types';
 import { useCart } from '../../context/CartContext';
 import { ResponsiveImage } from '../../components/ResponsiveImage';
 import { getImageUrl } from '../../utils/imageUtils';
+import { VirtualTryOn } from '../../components/VirtualTryOn';
 
 interface ProductCardProps {
     product: Product;
@@ -27,6 +28,7 @@ interface ProductCardProps {
 export const ProductCard = ({ product }: ProductCardProps) => {
     const { addItem } = useCart();
     const navigate = useNavigate();
+    const [showVirtualTryOn, setShowVirtualTryOn] = useState(false);
 
     const formatPrice = (price: number) => {
         return new Intl.NumberFormat('en-IN', {
@@ -57,6 +59,11 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     const handleWishlist = (e: React.MouseEvent) => {
         e.stopPropagation();
         toast.info('Wishlist feature coming soon!');
+    };
+
+    const handleVirtualTryOn = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setShowVirtualTryOn(true);
     };
 
     return (
@@ -96,6 +103,13 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                             aria-label="Add to wishlist"
                         >
                             <Heart className="h-4 w-4 sm:h-5 sm:w-5 text-gray-600 hover:text-red-500" />
+                        </button>
+                        <button
+                            className="p-2 sm:p-2.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full shadow-lg hover:from-purple-600 hover:to-pink-600 transition-colors duration-300 touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center"
+                            onClick={handleVirtualTryOn}
+                            aria-label="Virtual Try-On"
+                        >
+                            <Camera className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                         </button>
                         <button
                             className="p-2 sm:p-2.5 bg-white rounded-full shadow-lg hover:bg-yellow-50 transition-colors duration-300 touch-manipulation min-w-[44px] min-h-[44px] flex items-center justify-center"
@@ -167,8 +181,27 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                     >
                         {product.is_active && product.stock_quantity > 0 ? 'Add to Cart' : 'Out of Stock'}
                     </button>
+
+                    {/* Virtual Try-On Button */}
+                    <button
+                        className="w-full py-2.5 sm:py-3 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 sm:transform sm:hover:scale-105 shadow-lg min-h-[44px] touch-manipulation active:scale-95 bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 flex items-center justify-center space-x-2 mt-2"
+                        onClick={handleVirtualTryOn}
+                    >
+                        <Camera className="h-4 w-4 sm:h-5 sm:w-5" />
+                        <span>Try Virtually</span>
+                    </button>
                 </div>
             </div>
+
+            {/* Virtual Try-On Modal */}
+            {showVirtualTryOn && (
+                <VirtualTryOn
+                    productImage={getImageUrl(product.image_url)}
+                    productName={product.name}
+                    productCategory={product.category}
+                    onClose={() => setShowVirtualTryOn(false)}
+                />
+            )}
         </>
     );
 };

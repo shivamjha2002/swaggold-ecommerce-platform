@@ -27,6 +27,7 @@ const Khata = lazy(() => import('./pages/Khata'));
 const Predictions = lazy(() => import('./pages/Predictions'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
 const Contact = lazy(() => import('./pages/Contact'));
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const LoginPage = lazy(() => import('./pages/auth/LoginPage'));
 const SignupPage = lazy(() => import('./pages/auth/SignupPage'));
 const ForgotPasswordPage = lazy(() => import('./pages/auth/ForgotPasswordPage'));
@@ -64,6 +65,7 @@ function App() {
                     <Route path="/about" element={<About />} />
                     <Route path="/products" element={<Products />} />
                     <Route path="/contact" element={<Contact />} />
+                    <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
                     {/* Auth Routes */}
                     <Route path="/login" element={<LoginPage />} />

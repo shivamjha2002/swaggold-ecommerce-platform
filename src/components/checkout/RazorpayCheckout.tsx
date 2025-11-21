@@ -22,6 +22,22 @@ interface RazorpayOptions {
     modal?: {
         ondismiss?: () => void;
     };
+    config?: {
+        display?: {
+            blocks?: {
+                banks?: {
+                    name: string;
+                    instruments: Array<{
+                        method: string;
+                    }>;
+                };
+            };
+            sequence?: string[];
+            preferences?: {
+                show_default_blocks?: boolean;
+            };
+        };
+    };
 }
 
 interface RazorpaySuccessResponse {
@@ -184,6 +200,33 @@ export const RazorpayCheckout: React.FC<RazorpayCheckoutProps> = ({
                     setError('Payment cancelled. You can retry the payment.');
                     if (onRetry) {
                         // Don't call onFailure here, just show the retry option
+                    }
+                }
+            },
+            config: {
+                display: {
+                    blocks: {
+                        banks: {
+                            name: 'All payment methods',
+                            instruments: [
+                                {
+                                    method: 'upi'
+                                },
+                                {
+                                    method: 'card'
+                                },
+                                {
+                                    method: 'netbanking'
+                                },
+                                {
+                                    method: 'wallet'
+                                }
+                            ]
+                        }
+                    },
+                    sequence: ['block.banks'],
+                    preferences: {
+                        show_default_blocks: true
                     }
                 }
             }

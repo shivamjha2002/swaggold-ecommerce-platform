@@ -86,25 +86,9 @@ const About = () => {
             <div className="relative">
               <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl bg-gradient-to-br from-yellow-50 to-yellow-100">
                 <img
-                  src="/src/Images/WhatsApp Image 2025-06-21 at 19.42.26.jpeg"
-                  alt="Swati Jewellers Heritage"
+                  src="/src/Images/About .png"
+                  alt="Swati Jewellers - Premium Jewelry Collection"
                   className="w-full h-full object-cover"
-                  onError={(e) => {
-                    // Fallback to a beautiful jewelry-themed gradient background
-                    (e.target as HTMLImageElement).style.display = 'none';
-                    (e.target as HTMLImageElement).parentElement!.innerHTML = `
-                      <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600">
-                        <div class="text-center text-white p-8">
-                          <svg class="w-32 h-32 mx-auto mb-4 opacity-90" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2L2 7v10c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-10-5zm0 18c-3.86-.96-7-5.54-7-10V8.3l7-3.11 7 3.11V10c0 4.46-3.14 9.04-7 10z"/>
-                            <circle cx="12" cy="12" r="3"/>
-                          </svg>
-                          <h3 class="text-2xl font-bold">Swati Jewellers</h3>
-                          <p class="text-sm mt-2 opacity-90">Premium Gold & Diamond Jewelry</p>
-                        </div>
-                      </div>
-                    `;
-                  }}
                 />
               </div>
               <div className="absolute -bottom-6 -right-6 bg-gradient-to-br from-yellow-400 to-yellow-500 p-8 rounded-2xl shadow-xl">

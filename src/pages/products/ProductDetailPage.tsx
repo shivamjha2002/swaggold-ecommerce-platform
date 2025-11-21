@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Minus, Plus, ShoppingCart, AlertCircle, Gem, Weight, Shield } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Minus, Plus, ShoppingCart, AlertCircle, Gem, Weight, Shield, Camera } from 'lucide-react';
 import { toast } from 'react-toastify';
 import { Product } from '../../types';
 import { productService } from '../../services/productService';
@@ -8,6 +8,7 @@ import { useCart } from '../../context/CartContext';
 import { getErrorMessage } from '../../utils/errorHandler';
 import { getImageUrl } from '../../utils/imageUtils';
 import { ResponsiveImage } from '../../components/ResponsiveImage';
+import { VirtualTryOn } from '../../components/VirtualTryOn';
 
 /**
  * ProductDetailPage component - displays detailed product information with add to cart
@@ -36,6 +37,7 @@ export const ProductDetailPage = () => {
     const [quantity, setQuantity] = useState(1);
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
     const [addingToCart, setAddingToCart] = useState(false);
+    const [showVirtualTryOn, setShowVirtualTryOn] = useState(false);
 
     // Fetch product details from GET /api/products/:id endpoint
     useEffect(() => {
@@ -242,8 +244,8 @@ export const ProductDetailPage = () => {
                                         onClick={handlePreviousImage}
                                         disabled={selectedImageIndex === 0}
                                         className={`absolute left-4 top-1/2 transform -translate-y-1/2 p-2 bg-white/90 rounded-full shadow-lg transition-all ${selectedImageIndex === 0
-                                                ? 'opacity-50 cursor-not-allowed'
-                                                : 'hover:bg-white hover:scale-110'
+                                            ? 'opacity-50 cursor-not-allowed'
+                                            : 'hover:bg-white hover:scale-110'
                                             }`}
                                         aria-label="Previous image"
                                     >
@@ -253,8 +255,8 @@ export const ProductDetailPage = () => {
                                         onClick={handleNextImage}
                                         disabled={selectedImageIndex === images.length - 1}
                                         className={`absolute right-4 top-1/2 transform -translate-y-1/2 p-2 bg-white/90 rounded-full shadow-lg transition-all ${selectedImageIndex === images.length - 1
-                                                ? 'opacity-50 cursor-not-allowed'
-                                                : 'hover:bg-white hover:scale-110'
+                                            ? 'opacity-50 cursor-not-allowed'
+                                            : 'hover:bg-white hover:scale-110'
                                             }`}
                                         aria-label="Next image"
                                     >
@@ -272,8 +274,8 @@ export const ProductDetailPage = () => {
                                         key={index}
                                         onClick={() => setSelectedImageIndex(index)}
                                         className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${selectedImageIndex === index
-                                                ? 'border-yellow-500 shadow-lg scale-105'
-                                                : 'border-gray-300 hover:border-yellow-400'
+                                            ? 'border-yellow-500 shadow-lg scale-105'
+                                            : 'border-gray-300 hover:border-yellow-400'
                                             }`}
                                     >
                                         <ResponsiveImage
@@ -373,8 +375,8 @@ export const ProductDetailPage = () => {
                                     onClick={handleDecrement}
                                     disabled={quantity <= 1 || isOutOfStock}
                                     className={`p-2 rounded-lg border-2 transition-all ${quantity <= 1 || isOutOfStock
-                                            ? 'border-gray-300 text-gray-400 cursor-not-allowed'
-                                            : 'border-yellow-400 text-yellow-600 hover:bg-yellow-50'
+                                        ? 'border-gray-300 text-gray-400 cursor-not-allowed'
+                                        : 'border-yellow-400 text-yellow-600 hover:bg-yellow-50'
                                         }`}
                                     aria-label="Decrease quantity"
                                 >
@@ -395,8 +397,8 @@ export const ProductDetailPage = () => {
                                     onClick={handleIncrement}
                                     disabled={quantity >= product.stock_quantity || isOutOfStock}
                                     className={`p-2 rounded-lg border-2 transition-all ${quantity >= product.stock_quantity || isOutOfStock
-                                            ? 'border-gray-300 text-gray-400 cursor-not-allowed'
-                                            : 'border-yellow-400 text-yellow-600 hover:bg-yellow-50'
+                                        ? 'border-gray-300 text-gray-400 cursor-not-allowed'
+                                        : 'border-yellow-400 text-yellow-600 hover:bg-yellow-50'
                                         }`}
                                     aria-label="Increase quantity"
                                 >
@@ -416,10 +418,10 @@ export const ProductDetailPage = () => {
                             onClick={handleAddToCart}
                             disabled={isOutOfStock || addingToCart}
                             className={`w-full py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center space-x-2 ${isOutOfStock
-                                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                                    : addingToCart
-                                        ? 'bg-yellow-400 text-black cursor-wait'
-                                        : 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600'
+                                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                : addingToCart
+                                    ? 'bg-yellow-400 text-black cursor-wait'
+                                    : 'bg-gradient-to-r from-yellow-400 to-yellow-500 text-black hover:from-yellow-500 hover:to-yellow-600'
                                 }`}
                         >
                             {addingToCart ? (
@@ -437,6 +439,15 @@ export const ProductDetailPage = () => {
                             )}
                         </button>
 
+                        {/* Virtual Try-On Button */}
+                        <button
+                            onClick={() => setShowVirtualTryOn(true)}
+                            className="w-full py-4 rounded-xl font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center justify-center space-x-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600"
+                        >
+                            <Camera className="h-5 w-5" />
+                            <span>Try Virtually</span>
+                        </button>
+
                         {/* Additional Info */}
                         <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
                             <p className="text-sm text-blue-800">
@@ -446,6 +457,16 @@ export const ProductDetailPage = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Virtual Try-On Modal */}
+            {showVirtualTryOn && product && (
+                <VirtualTryOn
+                    productImage={getImageUrl(product.images[selectedImageIndex])}
+                    productName={product.name}
+                    productCategory={product.category}
+                    onClose={() => setShowVirtualTryOn(false)}
+                />
+            )}
         </div>
     );
 };
