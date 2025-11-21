@@ -6,24 +6,17 @@ services:
     region: ohio
     branch: main
     
-    # Force Python version
     pythonVersion: "3.11.8"
     
-    # Explicit build commands to override Poetry
     buildCommand: |-
-      python --version
       pip install --upgrade pip
-      pip install wheel
-      pip install --no-cache-dir -r requirements.txt
+      pip install -r requirements.txt
       
-    # Start Command
     startCommand: |-
       gunicorn run:app --bind 0.0.0.0:$PORT
       
-    # Root directory for the backend
     rootDirectory: backend
     
-    # Environment Variables
     envVars:
       - key: FLASK_ENV
         value: production
