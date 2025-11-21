@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: swati-jewellers-frontend
+    env: static
+    buildCommand: npm run build
+    publishDir: ./dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://swaggold-ecommerce-platform-1.onrender.com/api
