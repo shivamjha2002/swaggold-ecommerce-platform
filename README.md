@@ -1,76 +1,79 @@
-About SwagGold – Jewellery E-Commerce Platform
+🟡 SwagGold – Jewellery E-Commerce Platform (Full-Stack MERN + Flask + MongoDB)
 
-SwagGold is a full-stack jewellery e-commerce platform built using React + TypeScript, Flask (Python), and MongoDB.
-The system includes:
+SwagGold is a full-stack premium jewellery e-commerce platform built with React + TypeScript (Frontend), Flask (Backend), and MongoDB (Database).
+This platform is designed to provide a luxury online shopping experience inspired by real jewellery brands.
 
-🛍️ Customer Storefront with product browsing, filters, search, and collections
+It includes a complete admin panel, secure checkout, live gold price tracking, and even an AI/ML model that predicts yearly gold rates.
 
-🔐 User Authentication (Register, Login, Forgot Password)
+✨ Key Features
+🛍️ Customer Storefront
 
-🛒 Advanced Cart & Checkout
+Modern UI with a gold-theme aesthetic
 
-💳 Payments Integration (UPI & Card/Wallet)
+Browse by categories, filters & sorting
 
-🛠️ Admin Management Panel (Products, Categories, Orders)
+Product previews with multiple images
 
-📈 Live Gold Price Tracking
+Wishlist & responsive quick add
 
-🤖 AI/ML Model to predict gold rates year-by-year
+🔐 Authentication
 
-⚡ Fully responsive UI designed for a premium jewellery experience
+User registration & login
 
-🚀 How to Run the Project (Development Setup)
+Forgot Password & OTP verification
 
-Follow the steps below to run both backend and frontend:
+Profile dashboard & address management
 
-🟣 1️⃣ Start the Backend (Flask + MongoDB)
-cd backend
-python run.py
+🛒 Cart + Checkout
 
+Add / Remove items
 
-This will:
+Auto price calculation
 
-Start the Flask backend
+Save address & update address
 
-Connect to MongoDB
+Order confirmation page
 
-Enable API routes for products, users, orders, payments, and admin
+💳 Online Payments
 
-Serve AI model prediction endpoints
+UPI (Razorpay)
 
-🟡 2️⃣ Start the Frontend (React + TypeScript)
-cd frontend
-npm install
-npm run dev
+Card & Wallet (Braintree)
 
+🛠️ Admin Panel
 
-This will:
+Create / Edit / Delete categories
 
-Launch the React client
+Add new products with images
 
-Connect the UI with backend APIs
+Manage orders
 
-Run the platform at:
-➤ http://localhost:5173/
- (or whichever port Vite assigns)
+Add product details + pricing
 
-📦 Project Structure
-swaggold-ecommerce-platform/
-│── backend/        # Flask backend + ML model + APIs
-│── frontend/       # React + TypeScript UI
-│── .vscode/        # Editor configuration
-│── .python-version # Python version info
+🤖 AI/ML Model
 
-📌 Tech Stack
+Predicts gold rate per year
+
+Uses historical data + ML regression
+
+Fetchable via API
+
+🟡 Live Gold Price Tracking
+
+Real-time gold price updates
+
+Integrated into backend
+
+🧰 Tech Stack
 Frontend
 
 React + TypeScript
 
 Vite
 
-Context API / Redux (if applicable)
+TailwindCSS / Custom UI
 
-TailwindCSS / Custom CSS
+Axios (API calls)
 
 Backend
 
@@ -78,22 +81,63 @@ Flask (Python)
 
 MongoDB
 
-ML Model (Predictive Analytics)
+ML Model (Gold Price Prediction)
+
+REST APIs
 
 Payments
 
-Razorpay UPI
+Razorpay UPI Gateway
 
-Braintree Wallet/Card
+Braintree Card/Wallet Gateway
 
-🎯 Project Highlights
+🚀 How to Run the Project
 
-Complete jewellery e-commerce workflow
+Follow these steps to run the backend and frontend.
 
-Admin dashboard for real-time management
+1️⃣ Start the Backend (Flask API)
+cd backend
+python run.py
 
-Clean code architecture (frontend + backend separated)
 
-AI-powered gold prediction
+This will start:
 
-Optimized UI for jewellery brands
+Flask server
+
+Database connection
+
+API routes (Products, Auth, Cart, Orders, ML, Gold Rates)
+
+Backend runs at → http://localhost:5000
+
+2️⃣ Start the Frontend (React + TypeScript)
+cd frontend
+npm install
+npm run dev
+
+
+Frontend runs at → http://localhost:5173
+
+📂 Project Structure
+swaggold-ecommerce-platform/
+│
+├── backend/              # Flask backend + ML model + Gold rate module
+├── frontend/             # React + TypeScript frontend
+├── .vscode/              # Editor settings
+├── .python-version       # Backend python version indicator
+└── README.md
+
+📌 Future Enhancements
+
+Admin revenue analytics dashboard
+
+SEO optimization
+
+PWA mobile application
+
+Automated ML model retraining
+
+👨‍💻 Developer
+
+Shivam Kumar Jha
+Email: shivamjhamay2002@gmail.com
